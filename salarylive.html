@@ -35,7 +35,7 @@
         }
 
         .header {
-            margin-bottom: 40px;
+            margin-bottom: 17px;
         }
 
         .title {
@@ -56,7 +56,7 @@
         }
 
         .section {
-            margin-bottom: 25px;
+            margin-bottom: 10px;
         }
 
         .section-label {
@@ -110,16 +110,12 @@
         select {
             width: 100%;
             padding: 12px 10px;
-            padding-right: 30px;
             border: 1px solid #ddd;
             background: #ffffff;
             color: #1a1a1a;
             border-radius: 10px;
             font-size: 13px;
             font-family: inherit;
-            text-align-last: center;
-            text-align: center;
-            direction: ltr;
         }
 
         select option {
@@ -240,7 +236,7 @@
         }
 
         .amount-value {
-            font-size: 48px;
+            font-size: clamp(24px, 10vw, 40px);
             font-weight: 800;
             color: #FF6B9D;
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', monospace;
@@ -302,15 +298,10 @@
 
         .subtitle-text {
             font-size: 11px;
-            color: #666;
-            line-height: 1.6;
+            color: #999;
+            line-height: 1.5;
             text-align: center;
             margin-top: 15px;
-            background: #ffffff;
-            padding: 14px 12px;
-            border-radius: 10px;
-            border: 1px solid #f0f0f0;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
         }
 
         .reset-btn {
@@ -339,6 +330,15 @@
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 15px;
+        }
+
+        #toss-ad-container {
+            display: none;
+            margin-bottom: 20px;
+        }
+
+        #toss-ad-container.show {
+            display: block;
         }
     </style>
 </head>
@@ -380,9 +380,9 @@
 
             <!-- 4단계: 근무시간 -->
             <div class="section">
-                <div class="section-label">일일 근무시간</div>
-                <input type="number" id="workHours" value="8" min="1" max="24" placeholder="8">
-                <div class="guide-text">근무시간(점심 1시간 제외)</div>
+                <div class="section-label">휴게 시간 (시간)</div>
+                <input type="number" id="breakTime" value="1" min="0" max="5" placeholder="1">
+                <div class="guide-text">휴게 시간만 입력하세요 (특정 시간대는 상관없음)</div>
             </div>
 
             <!-- 5단계: 근무 시간대 -->
@@ -392,25 +392,24 @@
                     <div class="input-group">
                         <label class="input-label">시작 시간</label>
                         <div style="display: flex; gap: 8px;">
-                            <select id="startAmpm" style="flex: 1;">
+                            <select id="startAmpm">
                                 <option value="am">오전</option>
                                 <option value="pm">오후</option>
                             </select>
-                            <input type="number" id="startHour" min="1" max="12" value="9" placeholder="시간" style="flex: 1;">
+                            <input type="number" id="startHour" min="1" max="12" value="9" placeholder="시간">
                         </div>
                     </div>
                     <div class="input-group">
                         <label class="input-label">종료 시간</label>
                         <div style="display: flex; gap: 8px;">
-                            <select id="endAmpm" style="flex: 1;">
+                            <select id="endAmpm">
                                 <option value="am">오전</option>
                                 <option value="pm" selected>오후</option>
                             </select>
-                            <input type="number" id="endHour" min="1" max="12" value="6" placeholder="시간" style="flex: 1;">
+                            <input type="number" id="endHour" min="1" max="12" value="6" placeholder="시간">
                         </div>
                     </div>
                 </div>
-                <div class="guide-text">점심시간 1시간은 자동으로 제외됩니다</div>
             </div>
 
             <button class="btn-primary" id="saveBtn">저장하고 시작</button>
@@ -418,9 +417,6 @@
 
         <!-- 메인 화면 -->
         <div class="main-screen" id="mainScreen">
-            <!-- 배너 광고 (최상단) -->
-            <div id="toss-ad-container" style="width: 100%; height: 96px; margin-bottom: 20px;"></div>
-
             <div class="main-header">
                 <div>
                     <div class="title" style="margin-bottom: 4px;">머니 카운팅</div>
@@ -429,10 +425,11 @@
                 <button class="settings-btn" id="editBtn">⚙️</button>
             </div>
 
+            <div id="toss-ad-container"></div>
+
             <div class="current-amount">
                 <div class="amount-label">현재까지 벌어들인 금액</div>
-                <div class="amount-value" id="currentAmount">₩0.00</div>
-                <div class="disclaimer-text">⚠️ 평균값 기준 계산으로, 실제와 다를 수 있습니다</div>
+                <div class="amount-value" id="currentAmount">₩0</div>
                 <div class="items-text" id="itemsText"></div>
                 <div class="subtitle-text">팀장이 욕할때도, 근무시간에 💩쌸때도,<br>고객이 욕할때도 나는 돈을 번다.<br><span style="font-weight: 700;">참자 참자 참자!</span></div>
             </div>
@@ -443,6 +440,12 @@
                     <div class="progress-fill" id="progressFill" style="width: 0%"></div>
                 </div>
                 <div class="progress-text" id="progressText">0%</div>
+            </div>
+
+            <div style="background: #fff3f5; border: 1px solid #FFD4DC; border-radius: 8px; padding: 12px; text-align: center; margin-bottom: 20px;" id="perSecondSection">
+                <div style="font-size: 12px; color: #666; margin-bottom: 6px;">1초당 벌 수 있는 금액</div>
+                <div style="font-size: 16px; font-weight: 700; color: #FF6B9D; margin-bottom: 8px;" id="perSecondAmount">₩0</div>
+                <div style="font-size: 11px; color: #999; line-height: 1.4;" id="workStatusMessage"></div>
             </div>
 
             <button class="reset-btn" id="resetBtn">설정 변경</button>
@@ -464,7 +467,7 @@
         const amountLabel = document.getElementById('amountLabel');
         const guideText = document.getElementById('guideText');
         const afterTaxCheckbox = document.getElementById('afterTaxCheckbox');
-        const workHours = document.getElementById('workHours');
+        const breakTime = document.getElementById('breakTime');
         const startAmpm = document.getElementById('startAmpm');
         const startHour = document.getElementById('startHour');
         const endAmpm = document.getElementById('endAmpm');
@@ -547,7 +550,7 @@
                 return;
             }
 
-            const wHours = parseInt(workHours.value) || 8;
+            const bTime = parseInt(breakTime.value) || 1;
             const sTime = convertTo24Hour(startAmpm.value, startHour.value);
             const eTime = convertTo24Hour(endAmpm.value, endHour.value);
             const isAfterTax = afterTaxCheckbox.checked;
@@ -556,7 +559,7 @@
                 salaryType: selectedSalaryType,
                 amount: amount,
                 afterTax: isAfterTax,
-                workHours: wHours,
+                breakTime: bTime,
                 startTime: sTime,
                 endTime: eTime,
                 savedAt: new Date().toISOString()
@@ -601,13 +604,13 @@
             // 세후 체크
             afterTaxCheckbox.checked = settings.afterTax;
 
-            // 근무시간
-            workHours.value = settings.workHours;
+            // 휴게 시간
+            breakTime.value = settings.breakTime;
 
             // 시간대 변환 및 표시
             const startConverted = convertTo12Hour(settings.startTime);
             const endConverted = convertTo12Hour(settings.endTime);
-            
+
             startAmpm.value = startConverted.ampm;
             startHour.value = startConverted.hour;
             endAmpm.value = endConverted.ampm;
@@ -678,35 +681,53 @@
                 const [startHour, startMin] = settings.startTime.split(':').map(Number);
                 const [endHour, endMin] = settings.endTime.split(':').map(Number);
 
+                // 근무시간 계산 (종료시간 - 시작시간 - 휴게시간)
+                const totalHours = endHour - startHour;
+                const breakHours = settings.breakTime || 1;
+                const actualWorkHours = Math.max(totalHours - breakHours, 1);
+                
                 const startDate = new Date(now.getFullYear(), now.getMonth(), now.getDate(), startHour, startMin);
                 const endDate = new Date(now.getFullYear(), now.getMonth(), now.getDate(), endHour, endMin);
-                const lunchStart = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 12, 0);
-                const lunchEnd = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 13, 0);
+
+                // 초당 금액 계산
+                const perSecondAmount = Math.round(secondly * 100) / 100;
+                const perSecondFormatted = new Intl.NumberFormat('ko-KR', {
+                    style: 'currency',
+                    currency: 'KRW',
+                    minimumFractionDigits: 0,
+                    maximumFractionDigits: 0
+                }).format(perSecondAmount);
+                
+                document.getElementById('perSecondAmount').textContent = perSecondFormatted;
 
                 let workTimeElapsed = 0;
-                let totalWorkSeconds = settings.workHours * 3600;
+                let totalWorkSeconds = actualWorkHours * 3600;
                 let isOffWork = false;
+                let isBeforeWork = false;
+                let isWorkTime = false;
 
-                // 퇴근 시간 도달 확인
-                if (now >= endDate) {
+                // 근무 시간 상태 판단
+                if (now < startDate) {
+                    // 근무 시간 전
+                    isBeforeWork = true;
+                } else if (now >= endDate) {
+                    // 근무 시간 후
                     isOffWork = true;
-                    // 퇴근했을 때: 종료시간까지만 계산
-                    let elapsed = (endDate - startDate) / 1000;
-                    elapsed -= 3600; // 점심시간 1시간 제외
-                    workTimeElapsed = elapsed;
-                } else if (now >= startDate) {
+                    workTimeElapsed = actualWorkHours * 3600;
+                } else {
                     // 근무 시간 중
+                    isWorkTime = true;
                     let elapsed = (now - startDate) / 1000;
-                    
-                    // 점심시간 제외
-                    if (now > lunchStart && now < lunchEnd) {
-                        const lunchElapsed = (now - lunchStart) / 1000;
-                        elapsed -= lunchElapsed;
-                    } else if (now >= lunchEnd) {
-                        elapsed -= 3600; // 1시간 제외
-                    }
-
                     workTimeElapsed = Math.max(0, elapsed);
+                }
+
+                // 상태 메시지 및 섹션 표시 여부
+                const perSecondSection = document.getElementById('perSecondSection');
+                if (isWorkTime) {
+                    perSecondSection.style.display = 'none';
+                } else {
+                    perSecondSection.style.display = 'block';
+                    document.getElementById('workStatusMessage').textContent = '';
                 }
 
                 const earned = secondly * workTimeElapsed;
@@ -726,18 +747,27 @@
                 const clampedProgress = Math.min(100, progressPercent);
                 progressFill.style.width = clampedProgress + '%';
                 
-                if (isOffWork) {
-                    progressText.textContent = '퇴근 🎉';
+                if (isBeforeWork) {
+                    progressText.textContent = '근무 준비중';
+                } else if (isOffWork) {
+                    progressText.textContent = '앗싸 퇴근이닭!';
                 } else if (clampedProgress >= 85) {
                     progressText.textContent = '퇴근이 보인다!!!';
                 } else {
                     progressText.textContent = Math.round(clampedProgress) + '%';
                 }
 
-                // 아이템 획득
-                checkAndAcquireItem(earned, 300, 'item1', '🍭 츄파춥스 획득!');
-                checkAndAcquireItem(earned, 1000, 'item2', '🥤 박카스 획득!');
-                checkAndAcquireItem(earned, 2500, 'item3', '🍞 포켓몬빵 획득!');
+                // 아이템 획득 (근무시간에만)
+                if (isWorkTime || isOffWork) {
+                    checkAndAcquireItem(earned, 300, 'item1', '🍭 츄파춥스 획득!');
+                    checkAndAcquireItem(earned, 1000, 'item2', '🥤 박카스 획득!');
+                    checkAndAcquireItem(earned, 2500, 'item3', '🍞 포켓몬빵 획득!');
+                    checkAndAcquireItem(earned, 2800, 'item4', '🍨 아이스아메리카노 획득!');
+                    checkAndAcquireItem(earned, 3200, 'item5', '🚌 오늘 왕복 교통비 획득!');
+                    checkAndAcquireItem(earned, 15000, 'item6', '🎬 영화 관람권 획득!');
+                    checkAndAcquireItem(earned, 30000, 'item7', '🍗 치킨 한마리 획득!');
+                    checkAndAcquireItem(earned, 50000, 'item8', '🛍️ 올리브영 털이 가즈아!');
+                }
 
                 animationFrameId = requestAnimationFrame(update);
             }
@@ -779,90 +809,74 @@
         init();
     </script>
 
-    <!-- 토스 배너 광고 SDK (공식) -->
+    <!-- 토스 배너 광고 SDK -->
     <script src="https://cdn.appstoss.io/web-framework/toss-ads-sdk.js"></script>
     <script type="module">
         import { TossAds } from '@apps-in-toss/web-framework';
 
         let attachedBanner = null;
 
-        // 토스 광고 초기화
         function initializeTossAds() {
-            // 지원 여부 확인
-            if (!TossAds || !TossAds.initialize.isSupported()) {
-                console.warn('배너 광고 기능을 사용할 수 없습니다.');
-                return;
-            }
+            if (!TossAds) { return; }
+            if (!TossAds.initialize.isSupported()) { return; }
 
-            // SDK 초기화
             TossAds.initialize({
                 callbacks: {
-                    onInitialized: () => {
-                        console.log('Toss Ads SDK 초기화 완료');
-                        attachBannerAd();
+                    onInitialized: () => { 
+                        console.log('✅ Toss Ads SDK 초기화 완료');
+                        attachBannerAd(); 
                     },
                     onInitializationFailed: (error) => {
-                        console.error('Toss Ads SDK 초기화 실패:', error);
-                    },
-                },
+                        console.error('❌ Toss Ads SDK 초기화 실패:', error);
+                    }
+                }
             });
         }
 
-        // 배너 광고 부착
         function attachBannerAd() {
-            if (!TossAds) return;
-
+            if (!TossAds) { return null; }
             const adContainer = document.getElementById('toss-ad-container');
-            if (!adContainer) return;
+            if (!adContainer) { return null; }
 
-            // 테스트 광고 ID (발급 후 실제 ID로 변경)
-            const adGroupId = 'ait-ad-test-banner-id';
+            const adGroupId = 'ait.v2.live.9531ba5258114c4f';
 
             try {
-                attachedBanner = TossAds.attachBanner(adGroupId, adContainer, {
+                const result = TossAds.attachBanner(adGroupId, adContainer, {
                     theme: 'auto',
                     tone: 'blackAndWhite',
                     variant: 'expanded',
                     callbacks: {
-                        onAdRendered: (payload) => {
-                            console.log('광고 렌더링 완료:', payload.slotId);
-                        },
-                        onAdImpression: (payload) => {
-                            console.log('광고 노출됨:', payload.slotId);
+                        onAdRendered: (payload) => { 
+                            console.log('👁️ 광고 렌더링 완료');
+                            adContainer.classList.add('show'); 
                         },
                         onAdViewable: (payload) => {
-                            console.log('광고 노출 기록됨 (수익 발생):', payload.slotId);
+                            console.log('💰 광고 노출 기록 (수익 발생)');
+                        },
+                        onAdImpression: (payload) => {
+                            console.log('📢 광고 노출됨');
                         },
                         onAdClicked: (payload) => {
-                            console.log('광고 클릭됨:', payload.slotId);
+                            console.log('🖱️ 광고 클릭됨');
                         },
-                        onAdFailedToRender: (payload) => {
-                            console.error('광고 렌더링 실패:', payload.error.message);
+                        onNoFill: (payload) => { 
+                            console.warn('⚠️ 표시할 광고가 없습니다');
+                            adContainer.classList.remove('show'); 
                         },
-                        onNoFill: (payload) => {
-                            console.warn('표시할 광고가 없습니다:', payload.slotId);
-                        },
-                    },
+                        onAdFailedToRender: (payload) => { 
+                            console.error('❌ 광고 렌더링 실패:', payload.error.message);
+                            adContainer.classList.remove('show'); 
+                        }
+                    }
                 });
+                return result;
             } catch (error) {
-                console.error('배너 광고 부착 실패:', error);
+                console.error('광고 부착 중 오류:', error);
+                return null;
             }
         }
 
-        // 페이지 로드 시 광고 초기화
-        window.addEventListener('load', () => {
-            initializeTossAds();
-        });
-
-        // 모듈 언마운트 시 광고 정리
-        window.addEventListener('unload', () => {
-            if (attachedBanner) {
-                attachedBanner.destroy();
-            }
-            if (TossAds && TossAds.destroyAll) {
-                TossAds.destroyAll();
-            }
-        });
+        window.addEventListener('load', () => { initializeTossAds(); });
     </script>
 
     <!-- 토스 배너 광고 SDK END -->
