@@ -46,7 +46,7 @@
         }
 
         .highlight {
-            color: #FF6B9D;
+            color: #0051FF;
         }
 
         .subtitle {
@@ -87,9 +87,9 @@
         }
 
         .btn-tab.active {
-            border-color: #FF6B9D;
-            background: rgba(255, 107, 157, 0.1);
-            color: #FF6B9D;
+            border-color: #0051FF;
+            background: rgba(0, 81, 255, 0.1);
+            color: #0051FF;
         }
 
         .input-group {
@@ -131,8 +131,8 @@
         input:focus,
         select:focus {
             outline: none;
-            border-color: #FF6B9D;
-            box-shadow: 0 0 0 2px rgba(255, 107, 157, 0.1);
+            border-color: #0051FF;
+            box-shadow: 0 0 0 2px rgba(0, 81, 255, 0.1);
         }
 
         .checkbox-group {
@@ -140,8 +140,8 @@
             align-items: center;
             gap: 10px;
             padding: 12px;
-            background: rgba(255, 107, 157, 0.08);
-            border: 1px solid rgba(255, 107, 157, 0.3);
+            background: rgba(0, 81, 255, 0.08);
+            border: 1px solid rgba(0, 81, 255, 0.3);
             border-radius: 10px;
             cursor: pointer;
         }
@@ -150,7 +150,7 @@
             width: 18px;
             height: 18px;
             cursor: pointer;
-            accent-color: #FF6B9D;
+            accent-color: #0051FF;
         }
 
         .checkbox-label {
@@ -167,13 +167,13 @@
             padding: 10px;
             background: #f0f0f0;
             border-radius: 8px;
-            border-left: 2px solid #FF6B9D;
+            border-left: 2px solid #0051FF;
         }
 
         .btn-primary {
             width: 100%;
             padding: 16px;
-            background: #FF6B9D;
+            background: #0051FF;
             border: none;
             color: #fff;
             font-size: 15px;
@@ -185,7 +185,7 @@
         }
 
         .btn-primary:hover {
-            background: #FF5B8D;
+            background: #0041CC;
         }
 
         /* 메인 화면 */
@@ -218,8 +218,8 @@
         }
 
         .settings-btn:hover {
-            border-color: #FF6B9D;
-            color: #FF6B9D;
+            border-color: #0051FF;
+            color: #0051FF;
         }
 
         .current-amount {
@@ -229,16 +229,17 @@
 
         .amount-label {
             font-size: 12px;
-            color: #666;
+            color: #0051FF;
             margin-bottom: 15px;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 1px;
+            font-weight: 600;
         }
 
         .amount-value {
             font-size: clamp(24px, 10vw, 40px);
             font-weight: 800;
-            color: #FF6B9D;
+            color: #0051FF;
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', monospace;
             margin-bottom: 20px;
             word-break: break-all;
@@ -253,8 +254,8 @@
         }
 
         .progress-section {
-            background: rgba(255, 107, 157, 0.1);
-            border: 1px solid rgba(255, 107, 157, 0.3);
+            background: rgba(0, 81, 255, 0.1);
+            border: 1px solid rgba(0, 81, 255, 0.3);
             border-radius: 12px;
             padding: 20px;
             margin-bottom: 30px;
@@ -278,19 +279,19 @@
 
         .progress-fill {
             height: 100%;
-            background: linear-gradient(90deg, #FF6B9D, #FF8BAE);
+            background: linear-gradient(90deg, #0051FF, #3D7FFF);
             transition: width 0.3s;
         }
 
         .progress-text {
             font-size: 13px;
-            color: #FF6B9D;
+            color: #0051FF;
             font-weight: 600;
         }
 
         .items-text {
             font-size: 12px;
-            color: #FF6B9D;
+            color: #0051FF;
             margin-bottom: 30px;
             min-height: 20px;
             text-align: center;
@@ -318,8 +319,8 @@
         }
 
         .reset-btn:hover {
-            border-color: #FF6B9D;
-            color: #FF6B9D;
+            border-color: #0051FF;
+            color: #0051FF;
         }
 
         .hidden {
@@ -339,6 +340,28 @@
 
         #toss-ad-container.show {
             display: block;
+        }
+
+        #perSecondSection {
+            background: rgba(0, 81, 255, 0.08);
+            border: 1px solid rgba(0, 81, 255, 0.2);
+            border-radius: 8px;
+            padding: 12px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        #perSecondAmount {
+            font-size: 16px;
+            font-weight: 700;
+            color: #0051FF;
+            margin: 6px 0;
+        }
+
+        #workStatusMessage {
+            font-size: 11px;
+            color: #999;
+            line-height: 1.4;
         }
     </style>
 </head>
@@ -378,7 +401,7 @@
                 <div class="guide-text">체크하지 않으면 평균 실수령액(약 75%) 기준으로 자동 계산됩니다</div>
             </div>
 
-            <!-- 4단계: 근무시간 -->
+            <!-- 4단계: 휴게시간 -->
             <div class="section">
                 <div class="section-label">휴게 시간 (시간)</div>
                 <input type="number" id="breakTime" value="1" min="0" max="5" placeholder="1">
@@ -412,6 +435,15 @@
                 </div>
             </div>
 
+            <!-- 6단계: 공휴일 설정 -->
+            <div class="section">
+                <label class="checkbox-group">
+                    <input type="checkbox" id="isHolidayToday">
+                    <span class="checkbox-label">📅 오늘을 공휴일로 표시하기</span>
+                </label>
+                <div class="guide-text">임시공휴일, 대체공휴일, 또는 개인 휴무일을 지정하세요</div>
+            </div>
+
             <button class="btn-primary" id="saveBtn">저장하고 시작</button>
         </div>
 
@@ -420,18 +452,18 @@
             <div class="main-header">
                 <div>
                     <div class="title" style="margin-bottom: 4px;">머니 카운팅</div>
-                    <div style="font-size: 13px; color: #FF6B9D; font-weight: 600;">Money Counting 🤑</div>
+                    <div style="font-size: 13px; color: #0051FF; font-weight: 600;">Money Counting 🤑</div>
                 </div>
                 <button class="settings-btn" id="editBtn">⚙️</button>
             </div>
 
             <div id="toss-ad-container"></div>
 
-            <div class="current-amount">
-                <div class="amount-label">현재까지 벌어들인 금액</div>
+            <div class="current-amount" id="currentAmountSection">
+                <div class="amount-label">📅 오늘 현재까지 벌어들인 금액</div>
                 <div class="amount-value" id="currentAmount">₩0</div>
                 <div class="items-text" id="itemsText"></div>
-                <div class="subtitle-text">팀장이 욕할때도, 근무시간에 💩쌸때도,<br>고객이 욕할때도 나는 돈을 번다.<br><span style="font-weight: 700;">참자 참자 참자!</span></div>
+                <div class="subtitle-text">팀장이 욕할때도, 근무시간에 💩쌀때도,<br>고객이 욕할때도 나는 돈을 번다.<br><span style="font-weight: 700;">참자 참자 참자!</span></div>
             </div>
 
             <div class="progress-section">
@@ -442,9 +474,9 @@
                 <div class="progress-text" id="progressText">0%</div>
             </div>
 
-            <div style="background: #fff3f5; border: 1px solid #FFD4DC; border-radius: 8px; padding: 12px; text-align: center; margin-bottom: 20px;" id="perSecondSection">
+            <div style="background: rgba(0, 81, 255, 0.08); border: 1px solid rgba(0, 81, 255, 0.2); border-radius: 8px; padding: 12px; text-align: center; margin-bottom: 20px;" id="perSecondSection">
                 <div style="font-size: 12px; color: #666; margin-bottom: 6px;">1초당 벌 수 있는 금액</div>
-                <div style="font-size: 16px; font-weight: 700; color: #FF6B9D; margin-bottom: 8px;" id="perSecondAmount">₩0</div>
+                <div style="font-size: 16px; font-weight: 700; color: #0051FF; margin-bottom: 8px;" id="perSecondAmount">₩0</div>
                 <div style="font-size: 11px; color: #999; line-height: 1.4;" id="workStatusMessage"></div>
             </div>
 
@@ -453,6 +485,62 @@
     </div>
 
     <script>
+        // 고정 공휴일 (YYYY-MM-DD 형식)
+        const FIXED_HOLIDAYS = [
+            '01-01', // 신정
+            '03-01', // 삼일절
+            '04-05', // 어린이날
+            '06-06', // 현충일
+            '08-15', // 광복절
+            '10-03', // 개천절
+            '10-09', // 한글날
+            '12-25'  // 성탄절
+        ];
+
+        // 2025년 음력 공휴일
+        const LUNAR_HOLIDAYS_2025 = [
+            '01-28', // 설날 전날
+            '01-29', // 설날
+            '01-30', // 설날 다음날
+            '04-30', // 부처님 오신 날
+            '10-04', // 추석 전날
+            '10-05', // 추석
+            '10-06'  // 추석 다음날
+        ];
+
+        // 2026년 음력 공휴일
+        const LUNAR_HOLIDAYS_2026 = [
+            '02-16', // 설날 전날
+            '02-17', // 설날
+            '02-18', // 설날 다음날
+            '05-02', // 부처님 오신 날
+            '09-24', // 추석 전날
+            '09-25', // 추석
+            '09-26'  // 추석 다음날
+        ];
+
+        // 2027년 음력 공휴일
+        const LUNAR_HOLIDAYS_2027 = [
+            '02-05', // 설날 전날
+            '02-06', // 설날
+            '02-07', // 설날 다음날
+            '04-21', // 부처님 오신 날
+            '09-14', // 추석 전날
+            '09-15', // 추석
+            '09-16'  // 추석 다음날
+        ];
+
+        // 2028년 음력 공휴일
+        const LUNAR_HOLIDAYS_2028 = [
+            '01-25', // 설날 전날
+            '01-26', // 설날
+            '01-27', // 설날 다음날
+            '04-10', // 부처님 오신 날
+            '10-02', // 추석 전날
+            '10-03', // 추석
+            '10-04'  // 추석 다음날
+        ];
+
         let settings = null;
         let isRunning = false;
         let animationFrameId = null;
@@ -472,6 +560,7 @@
         const startHour = document.getElementById('startHour');
         const endAmpm = document.getElementById('endAmpm');
         const endHour = document.getElementById('endHour');
+        const isHolidayToday = document.getElementById('isHolidayToday');
         const saveBtn = document.getElementById('saveBtn');
         const editBtn = document.getElementById('editBtn');
         const resetBtn = document.getElementById('resetBtn');
@@ -481,6 +570,26 @@
         const itemsText = document.getElementById('itemsText');
 
         let selectedSalaryType = 'hourly';
+
+        // 오늘의 공휴일 여부 확인
+        function isHoliday(date) {
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            const mmdd = `${month}-${day}`;
+            const year = date.getFullYear();
+
+            // 고정 공휴일 확인
+            if (FIXED_HOLIDAYS.includes(mmdd)) return true;
+
+            // 음력 공휴일 확인
+            if (year === 2024 && LUNAR_HOLIDAYS_2024.includes(mmdd)) return true;
+            if (year === 2025 && LUNAR_HOLIDAYS_2025.includes(mmdd)) return true;
+            if (year === 2026 && LUNAR_HOLIDAYS_2026.includes(mmdd)) return true;
+            if (year === 2027 && LUNAR_HOLIDAYS_2027.includes(mmdd)) return true;
+            if (year === 2028 && LUNAR_HOLIDAYS_2028.includes(mmdd)) return true;
+
+            return false;
+        }
 
         // 시간 변환 함수 (12시간 → 24시간)
         function convertTo24Hour(ampm, hour) {
@@ -554,6 +663,7 @@
             const sTime = convertTo24Hour(startAmpm.value, startHour.value);
             const eTime = convertTo24Hour(endAmpm.value, endHour.value);
             const isAfterTax = afterTaxCheckbox.checked;
+            const isCustomHoliday = isHolidayToday.checked;
 
             settings = {
                 salaryType: selectedSalaryType,
@@ -562,6 +672,7 @@
                 breakTime: bTime,
                 startTime: sTime,
                 endTime: eTime,
+                isCustomHoliday: isCustomHoliday,
                 savedAt: new Date().toISOString()
             };
 
@@ -607,6 +718,9 @@
             // 휴게 시간
             breakTime.value = settings.breakTime;
 
+            // 공휴일 체크
+            isHolidayToday.checked = settings.isCustomHoliday;
+
             // 시간대 변환 및 표시
             const startConverted = convertTo12Hour(settings.startTime);
             const endConverted = convertTo12Hour(settings.endTime);
@@ -644,16 +758,13 @@
             if (salaryType === 'hourly') {
                 hourly = amount;
             } else if (salaryType === 'monthly') {
-                // 월급 → 시급 (월 160시간 기준)
                 hourly = amount / 160;
             } else if (salaryType === 'annual') {
-                // 연봉 → 시급 (연간 2080시간 기준: 52주 * 40시간)
                 hourly = amount / 2080;
             }
 
-            // 세후 처리
             if (!afterTax) {
-                hourly = hourly * 0.75; // 평균 75% 실수령
+                hourly = hourly * 0.75;
             }
 
             return hourly;
@@ -678,10 +789,16 @@
 
             function update() {
                 const now = new Date();
+                const dayOfWeek = now.getDay(); // 0=일, 1=월, ..., 6=토
+                const isWeekend = dayOfWeek === 0 || dayOfWeek === 6;
+                const isPublicHoliday = isHoliday(now);
+                const isCustomHoliday = settings.isCustomHoliday;
+                const isSomethingHoliday = isWeekend || isPublicHoliday || isCustomHoliday;
+
                 const [startHour, startMin] = settings.startTime.split(':').map(Number);
                 const [endHour, endMin] = settings.endTime.split(':').map(Number);
 
-                // 근무시간 계산 (종료시간 - 시작시간 - 휴게시간)
+                // 근무시간 계산
                 const totalHours = endHour - startHour;
                 const breakHours = settings.breakTime || 1;
                 const actualWorkHours = Math.max(totalHours - breakHours, 1);
@@ -689,7 +806,7 @@
                 const startDate = new Date(now.getFullYear(), now.getMonth(), now.getDate(), startHour, startMin);
                 const endDate = new Date(now.getFullYear(), now.getMonth(), now.getDate(), endHour, endMin);
 
-                // 초당 금액 계산
+                // 초당 금액 표시
                 const perSecondAmount = Math.round(secondly * 100) / 100;
                 const perSecondFormatted = new Intl.NumberFormat('ko-KR', {
                     style: 'currency',
@@ -702,32 +819,45 @@
 
                 let workTimeElapsed = 0;
                 let totalWorkSeconds = actualWorkHours * 3600;
-                let isOffWork = false;
                 let isBeforeWork = false;
+                let isOffWork = false;
                 let isWorkTime = false;
 
-                // 근무 시간 상태 판단
-                if (now < startDate) {
+                // 근무 상태 판단
+                if (isSomethingHoliday) {
+                    // 주말/공휴일
+                    isOffWork = true;
+                    document.getElementById('currentAmountSection').style.display = 'none';
+                    document.getElementById('workStatusMessage').textContent = '';
+                    progressText.textContent = '오늘은 쉬는 날입니다 🌴';
+                } else if (now < startDate) {
                     // 근무 시간 전
                     isBeforeWork = true;
+                    document.getElementById('currentAmountSection').style.display = 'block';
+                    document.getElementById('workStatusMessage').textContent = '';
+                    progressText.textContent = '근무 준비중';
                 } else if (now >= endDate) {
-                    // 근무 시간 후
+                    // 근무 시간 후 (퇴근함)
                     isOffWork = true;
-                    workTimeElapsed = actualWorkHours * 3600;
+                    document.getElementById('currentAmountSection').style.display = 'block';
+                    document.getElementById('workStatusMessage').textContent = '';
+                    progressText.textContent = '근무시간이 아닙니다';
+                    workTimeElapsed = actualWorkHours * 3600; // 실제 근무시간만큼 표시
                 } else {
                     // 근무 시간 중
                     isWorkTime = true;
+                    document.getElementById('currentAmountSection').style.display = 'block';
+                    document.getElementById('perSecondSection').style.display = 'none';
                     let elapsed = (now - startDate) / 1000;
                     workTimeElapsed = Math.max(0, elapsed);
+                    progressText.textContent = '근무중 화이팅!';
                 }
 
-                // 상태 메시지 및 섹션 표시 여부
-                const perSecondSection = document.getElementById('perSecondSection');
+                // perSecondSection 표시 여부 (근무 중일 때만 숨김)
                 if (isWorkTime) {
-                    perSecondSection.style.display = 'none';
+                    document.getElementById('perSecondSection').style.display = 'none';
                 } else {
-                    perSecondSection.style.display = 'block';
-                    document.getElementById('workStatusMessage').textContent = '';
+                    document.getElementById('perSecondSection').style.display = 'block';
                 }
 
                 const earned = secondly * workTimeElapsed;
@@ -746,19 +876,9 @@
                 // 진행률 표시
                 const clampedProgress = Math.min(100, progressPercent);
                 progressFill.style.width = clampedProgress + '%';
-                
-                if (isBeforeWork) {
-                    progressText.textContent = '근무 준비중';
-                } else if (isOffWork) {
-                    progressText.textContent = '앗싸 퇴근이닭!';
-                } else if (clampedProgress >= 85) {
-                    progressText.textContent = '퇴근이 보인다!!!';
-                } else {
-                    progressText.textContent = Math.round(clampedProgress) + '%';
-                }
 
                 // 아이템 획득 (근무시간에만)
-                if (isWorkTime || isOffWork) {
+                if (isWorkTime) {
                     checkAndAcquireItem(earned, 300, 'item1', '🍭 츄파춥스 획득!');
                     checkAndAcquireItem(earned, 1000, 'item2', '🥤 박카스 획득!');
                     checkAndAcquireItem(earned, 2500, 'item3', '🍞 포켓몬빵 획득!');
@@ -878,7 +998,5 @@
 
         window.addEventListener('load', () => { initializeTossAds(); });
     </script>
-
-    <!-- 토스 배너 광고 SDK END -->
 </body>
 </html>
